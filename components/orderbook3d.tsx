@@ -120,9 +120,7 @@ const Orderbook3D = () => {
         <label className="control-label control-checkbox">
           <input type="checkbox" checked={normalize} onChange={() => setNormalize(!normalize)} /> Normalize Volumes
         </label>
-
-
-<label className="control-label">
+        <label className="control-label">
           Theme:
           <select
             className="control-select"
