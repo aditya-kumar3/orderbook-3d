@@ -9,9 +9,9 @@ type Order = [number, number]; // [price, qty]
 type PricePoint = { time: number; price: number };
 
 const cameraPresets: Record<string, [number, number, number]> = {
-  angled: [0, 40, 60],
-  top: [0, 100, 0.1],
-  side: [100, 30, 0],
+  angled: [0, 26, 34],
+  top: [0, 52, 0.1],
+  side: [52, 20, 0],
 };
 
 const Bars = ({
@@ -31,12 +31,12 @@ const Bars = ({
   return (
     <>
       {bids.slice(0, depth).map(([price, qty], i) => {
-        const height = normalize ? (qty / maxQty) * 20 : qty / 50;
+        const height = normalize ? (qty / maxQty) * 26 : qty / 30;
         return (
           <mesh key={`bid-${i}`} position={[-i - 1, height / 2, 0]}>
-            <boxGeometry args={[0.8, Math.max(height, 0.2), 0.8]} />
+            <boxGeometry args={[0.9, Math.max(height, 0.3), 0.9]} />
             <meshStandardMaterial color="limegreen" />
-            <Text position={[0, height + 0.5, 0]} fontSize={0.5} color="yellow" anchorX="center">
+            <Text position={[0, height + 0.6, 0]} fontSize={0.55} color="yellow" anchorX="center">
               {qty.toFixed(2)}
             </Text>
           </mesh>
@@ -44,12 +44,12 @@ const Bars = ({
       })}
 
       {asks.slice(0, depth).map(([price, qty], i) => {
-        const height = normalize ? (qty / maxQty) * 20 : qty / 50;
+        const height = normalize ? (qty / maxQty) * 26 : qty / 30;
         return (
           <mesh key={`ask-${i}`} position={[i + 1, height / 2, 0]}>
-            <boxGeometry args={[0.8, Math.max(height, 0.2), 0.8]} />
+            <boxGeometry args={[0.9, Math.max(height, 0.3), 0.9]} />
             <meshStandardMaterial color="crimson" />
-            <Text position={[0, height + 0.5, 0]} fontSize={0.5} color="yellow" anchorX="center">
+            <Text position={[0, height + 0.6, 0]} fontSize={0.55} color="yellow" anchorX="center">
               {qty.toFixed(2)}
             </Text>
           </mesh>
@@ -68,6 +68,7 @@ const Orderbook3D = () => {
   const [animSpeed, setAnimSpeed] = useState(1);
   const [cameraView, setCameraView] = useState<'angled' | 'top' | 'side'>('angled');
   const [priceHistory, setPriceHistory] = useState<PricePoint[]>([]);
+  const sceneScale = 1.2;
 
   const cameraRef = useRef<any>(null);
 
@@ -159,18 +160,20 @@ const Orderbook3D = () => {
           <ambientLight intensity={1} />
           <pointLight position={[10, 10, 10]} />
           <OrbitControls />
-          <gridHelper args={[100, 100]} />
+          <gridHelper args={[60, 60]} />
 
-          {/* Bars */}
-          <Bars bids={bids} asks={asks} depth={depth} normalize={normalize} />
+          <group scale={[sceneScale, sceneScale, sceneScale]}>
+            {/* Bars */}
+            <Bars bids={bids} asks={asks} depth={depth} normalize={normalize} />
 
-          {/* Spread Cylinder */}
-          {bestBid && bestAsk && (
-            <mesh position={[0, 0.2, 0]}>
-              <cylinderGeometry args={[0.05, 0.05, Math.abs(bestAsk - bestBid) / 5, 16]} />
-              <meshStandardMaterial color="gold" emissive="yellow" emissiveIntensity={0.6} />
-            </mesh>
-          )}
+            {/* Spread Cylinder */}
+            {bestBid && bestAsk && (
+              <mesh position={[0, 0.2, 0]}>
+                <cylinderGeometry args={[0.06, 0.06, Math.abs(bestAsk - bestBid) / 3.5, 16]} />
+                <meshStandardMaterial color="gold" emissive="yellow" emissiveIntensity={0.6} />
+              </mesh>
+            )}
+          </group>
         </Canvas>
 
         {/* ================= Line Chart Overlay ================= */}
