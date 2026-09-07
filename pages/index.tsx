@@ -4,8 +4,8 @@ const Orderbook3D = dynamic(() => import('../components/orderbook3d'), { ssr: fa
 
 export default function Home() {
   return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>📊 Binance Orderbook 3D</h1>
+    <div className="page-root">
+      <h1 className="page-title">📊 Binance Orderbook 3D</h1>
       <Orderbook3D />
     </div>
   );
