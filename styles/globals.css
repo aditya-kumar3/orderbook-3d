@@ -157,10 +157,11 @@ body {
 
   .orderbook-chart-overlay {
     top: auto;
-    bottom: 0.6rem;
-    right: 0.6rem;
-    width: min(155px, 45%);
-    height: 100px;
-    padding: 4px;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    width: min(130px, 38%);
+    height: 80px;
+    padding: 3px;
+    background: rgba(0, 0, 0, 0.4);
   }
 }

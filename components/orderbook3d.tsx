@@ -9,9 +9,9 @@ type Order = [number, number]; // [price, qty]
 type PricePoint = { time: number; price: number };
 
 const cameraPresets: Record<string, [number, number, number]> = {
-  angled: [0, 26, 34],
-  top: [0, 52, 0.1],
-  side: [52, 20, 0],
+  angled: [0, 20, 24],
+  top: [0, 40, 0.1],
+  side: [40, 16, 0],
 };
 
 const Bars = ({
@@ -31,12 +31,12 @@ const Bars = ({
   return (
     <>
       {bids.slice(0, depth).map(([price, qty], i) => {
-        const height = normalize ? (qty / maxQty) * 26 : qty / 30;
+        const height = normalize ? (qty / maxQty) * 34 : qty / 20;
         return (
           <mesh key={`bid-${i}`} position={[-i - 1, height / 2, 0]}>
-            <boxGeometry args={[0.9, Math.max(height, 0.3), 0.9]} />
+            <boxGeometry args={[1, Math.max(height, 0.4), 1]} />
             <meshStandardMaterial color="limegreen" />
-            <Text position={[0, height + 0.6, 0]} fontSize={0.55} color="yellow" anchorX="center">
+            <Text position={[0, height + 0.7, 0]} fontSize={0.62} color="yellow" anchorX="center">
               {qty.toFixed(2)}
             </Text>
           </mesh>
@@ -44,12 +44,12 @@ const Bars = ({
       })}
 
       {asks.slice(0, depth).map(([price, qty], i) => {
-        const height = normalize ? (qty / maxQty) * 26 : qty / 30;
+        const height = normalize ? (qty / maxQty) * 34 : qty / 20;
         return (
           <mesh key={`ask-${i}`} position={[i + 1, height / 2, 0]}>
-            <boxGeometry args={[0.9, Math.max(height, 0.3), 0.9]} />
+            <boxGeometry args={[1, Math.max(height, 0.4), 1]} />
             <meshStandardMaterial color="crimson" />
-            <Text position={[0, height + 0.6, 0]} fontSize={0.55} color="yellow" anchorX="center">
+            <Text position={[0, height + 0.7, 0]} fontSize={0.62} color="yellow" anchorX="center">
               {qty.toFixed(2)}
             </Text>
           </mesh>
@@ -68,7 +68,7 @@ const Orderbook3D = () => {
   const [animSpeed, setAnimSpeed] = useState(1);
   const [cameraView, setCameraView] = useState<'angled' | 'top' | 'side'>('angled');
   const [priceHistory, setPriceHistory] = useState<PricePoint[]>([]);
-  const sceneScale = 1.2;
+  const sceneScale = 1.45;
 
   const cameraRef = useRef<any>(null);
 
@@ -156,11 +156,11 @@ const Orderbook3D = () => {
 
       {/* ================= 3D Canvas ================= */}
       <div className="orderbook-canvas-wrap">
-        <Canvas camera={{ position: cameraPresets[cameraView], fov: 60 }}>
+        <Canvas camera={{ position: cameraPresets[cameraView], fov: 50 }}>
           <ambientLight intensity={1} />
           <pointLight position={[10, 10, 10]} />
           <OrbitControls />
-          <gridHelper args={[60, 60]} />
+          <gridHelper args={[48, 48]} />
 
           <group scale={[sceneScale, sceneScale, sceneScale]}>
             {/* Bars */}
