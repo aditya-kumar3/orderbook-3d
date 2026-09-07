@@ -102,36 +102,41 @@ const Orderbook3D = () => {
   }, [cameraView]);
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        height: '100vh',
-        background: theme === 'dark' ? '#111' : '#fafafa',
-        color: theme === 'dark' ? 'white' : 'black',
-      }}
-    >
+    <div className={`orderbook-layout ${theme === 'dark' ? 'theme-dark' : 'theme-light'}`}>
       {/* ================= Left Controls Panel ================= */}
-      <div style={{ width: '250px', padding: '1rem', borderRight: '1px solid gray' }}>
+      <div className="orderbook-controls">
         <h2>⚙️ Controls</h2>
 
-        <label>Depth: {depth}</label>
-        <input type="range" min={5} max={50} value={depth} onChange={(e) => setDepth(+e.target.value)} />
+        <label className="control-label">Depth: {depth}</label>
+        <input
+          className="control-input"
+          type="range"
+          min={5}
+          max={50}
+          value={depth}
+          onChange={(e) => setDepth(+e.target.value)}
+        />
 
-        <label>
+        <label className="control-label control-checkbox">
           <input type="checkbox" checked={normalize} onChange={() => setNormalize(!normalize)} /> Normalize Volumes
         </label>
 
 
-<label>
+<label className="control-label">
           Theme:
-          <select value={theme} onChange={(e) => setTheme(e.target.value as 'dark' | 'light')}>
+          <select
+            className="control-select"
+            value={theme}
+            onChange={(e) => setTheme(e.target.value as 'dark' | 'light')}
+          >
             <option value="dark">Dark</option>
             <option value="light">Light</option>
           </select>
         </label>
 
-        <label>Animation Speed: {animSpeed}</label>
+        <label className="control-label">Animation Speed: {animSpeed.toFixed(1)}</label>
         <input
+          className="control-input"
           type="range"
           min={0.1}
           max={3}
@@ -140,16 +145,18 @@ const Orderbook3D = () => {
           onChange={(e) => setAnimSpeed(+e.target.value)}
         />
 
-        <div>
+        <div className="camera-controls">
           Camera Preset:
-          <button onClick={() => setCameraView('angled')}>Angled</button>
-          <button onClick={() => setCameraView('top')}>Top</button>
-          <button onClick={() => setCameraView('side')}>Side</button>
+          <div className="camera-buttons">
+            <button type="button" onClick={() => setCameraView('angled')}>Angled</button>
+            <button type="button" onClick={() => setCameraView('top')}>Top</button>
+            <button type="button" onClick={() => setCameraView('side')}>Side</button>
+          </div>
         </div>
       </div>
 
       {/* ================= 3D Canvas ================= */}
-      <div style={{ flex: 1, position: 'relative' }}>
+      <div className="orderbook-canvas-wrap">
         <Canvas camera={{ position: cameraPresets[cameraView], fov: 60 }}>
           <ambientLight intensity={1} />
           <pointLight position={[10, 10, 10]} />
@@ -169,18 +176,7 @@ const Orderbook3D = () => {
         </Canvas>
 
         {/* ================= Line Chart Overlay ================= */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 20,
-            right: 20,
-            width: '300px',
-            height: '200px',
-            background: 'rgba(0,0,0,0.5)',
-            padding: '10px',
-            borderRadius: '8px',
-          }}
-        >
+        <div className="orderbook-chart-overlay">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={priceHistory}>
               <XAxis dataKey="time" hide />
